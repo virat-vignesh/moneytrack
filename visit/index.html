@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Money Tracker</title>
+<link rel="stylesheet" href="style.css">
+
+
+
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Money Tracker</h2>
+
+    <input type="text" id="title" placeholder="Enter item name">
+    <input type="number" id="amount" placeholder="Enter amount">
+    <button onclick="addExpense()">Add Expense</button>
+
+    <div class="total-box">Total Spent: ₹<span id="total">0</span></div>
+
+    <div class="filter-box">
+        <h4>Filter by Date:</h4>
+        <input type="date" id="filterDate" onchange="filterByDate()">
+    </div>
+
+    <div class="history">
+        <h3>History</h3>
+        <div id="historyList"></div>
+    </div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
+    <div class="modal-content">
+        <h3>Edit Expense</h3>
+        <input type="text" id="editTitle">
+        <input type="number" id="editAmount">
+        <button onclick="saveEdit()">Save</button>
+        <button onclick="closeModal()" style="background:#6c757d;color:white;margin-top:8px;">Cancel</button>
+    </div>
+</div>
+
+<script>
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let currentEditIndex = null;
+
+function displayExpenses(list = expenses) {
+    const historyDiv = document.getElementById("historyList");
+    historyDiv.innerHTML = "";
+
+    list.forEach((exp, index) => {
+        historyDiv.innerHTML += `
+            <div class="item">
+                <div>
+                    <strong>${exp.title}</strong><br>
+                    <small>${exp.date}</small>
+                </div>
+
+                <div class="btns">
+                    <span class="amount">₹${exp.amount}</span>
+                    <button class="edit-btn" onclick="openEdit(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteExpense(${index})">X</button>
+                </div>
+            </div>
+        `;
+    });
+
+    calculateTotal();
+}
+
+function addExpense() {
+    const title = document.getElementById("title").value;
+    const amount = document.getElementById("amount").value;
+
+    if (!title || !amount) {
+        alert("Enter title & amount!");
+        return;
+    }
+
+    const date = new Date().toLocaleString();
+
+    expenses.push({ title, amount, date });
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    displayExpenses();
+
+    document.getElementById("title").value = "";
+    document.getElementById("amount").value = "";
+}
+
+function deleteExpense(index) {
+    expenses.splice(index, 1);
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    displayExpenses();
+}
+
+function calculateTotal() {
+    const total = expenses.reduce((sum, e) => sum + Number(e.amount), 0);
+    document.getElementById("total").innerText = total;
+}
+
+function filterByDate() {
+    const selectedDate = document.getElementById("filterDate").value;
+    if (!selectedDate) {
+        displayExpenses();
+        return;
+    }
+
+    const filtered = expenses.filter(e => e.date.startsWith(selectedDate));
+    displayExpenses(filtered);
+}
+
+function openEdit(index) {
+    currentEditIndex = index;
+    document.getElementById("editTitle").value = expenses[index].title;
+    document.getElementById("editAmount").value = expenses[index].amount;
+    document.getElementById("editModal").style.display = "flex";
+}
+
+function saveEdit() {
+    const newTitle = document.getElementById("editTitle").value;
+    const newAmount = document.getElementById("editAmount").value;
+
+    expenses[currentEditIndex].title = newTitle;
+    expenses[currentEditIndex].amount = newAmount;
+
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+
+    closeModal();
+    displayExpenses();
+}
+
+function closeModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+displayExpenses();
+</script>
+
+</body>
+</html>

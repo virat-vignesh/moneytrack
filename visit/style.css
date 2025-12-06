@@ -1,0 +1,114 @@
+   *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
+    body{
+        background:#f4f4f4;
+        padding:20px;
+    }
+
+    .container{
+        max-width:500px;
+        background:#fff;
+        margin:auto;
+        padding:25px;
+        border-radius:15px;
+        box-shadow:0 5px 20px rgba(0,0,0,0.1);
+    }
+
+    h2{text-align:center;margin-bottom:15px;}
+
+    input,button{
+        width:100%;
+        padding:12px;
+        margin:8px 0;
+        border-radius:10px;
+        border:1px solid #ccc;
+        font-size:16px;
+    }
+
+    button{
+        background:#0d6efd;
+        color:#fff;
+        border:none;
+        cursor:pointer;
+        transition:0.3s;
+    }
+
+    button:hover{background:#084298;}
+
+    .total-box{
+        background:#e3ffe3;
+        padding:15px;
+        font-size:18px;
+        border-radius:10px;
+        margin-top:10px;
+        text-align:center;
+        font-weight:bold;
+    }
+
+    .filter-box{
+        margin-top:15px;
+    }
+
+    .history h3{
+        margin-top:20px;
+    }
+
+    .item{
+        background:#f0f0f0;
+        padding:12px;
+        border-radius:10px;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        margin-bottom:10px;
+        animation:fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn{
+        from{opacity:0;transform:translateY(10px);}
+        to{opacity:1;transform:translateY(0);}
+    }
+
+    .amount{font-weight:bold;color:#d00000;}
+    
+    .btns{display:flex;gap:8px;}
+
+    .edit-btn, .delete-btn{
+        padding:6px 12px;
+        border:none;
+        border-radius:6px;
+        cursor:pointer;
+        color:#fff;
+    }
+
+    .edit-btn{background:#198754;}
+    .delete-btn{background:#dc3545;}
+
+    /* POPUP MODAL */
+    .modal{
+        position:fixed;
+        top:0;left:0;
+        width:100%;height:100%;
+        background:rgba(0,0,0,0.5);
+        display:none;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .modal-content{
+        background:#fff;
+        padding:20px;
+        width:90%;
+        max-width:350px;
+        border-radius:12px;
+        animation:zoom 0.3s ease;
+    }
+
+    @keyframes zoom{
+        from{transform:scale(0.7);opacity:0;}
+        to{transform:scale(1);opacity:1;}
+    }
+
+    @media (max-width:480px){
+        .container{padding:18px;}
+    }
